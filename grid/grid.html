@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>CSS-grid</title>
+  <style>
+    .grid {
+      display: grid;
+      grid-template-columns: 100px 100px 100px 100px;
+      grid-column-gap: 20px;
+      min-height: 70px;
+    }
+
+    .grid-item {
+      background-color: #f2f2f2;
+      padding: 15px;
+    }
+
+    .grid-fr {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      grid-column-gap: 20px;
+      min-height: 70px;
+      margin-top: 20px;
+    }
+
+    .grid-fr_same {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .grid-fr_same img {
+      max-width: 100%;
+    }
+
+    .grid-fr_different {
+      grid-template-columns: 1fr 1.618fr 2.618fr;
+    }
+
+    @media (max-width: 960px) {
+      .grid-fr_media {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .grid-fr_height {
+      height: 500px;
+      display: grid;
+      grid-template-rows: repeat(4, 1fr);
+      grid-auto-columns: calc((500px - 3em) / 4);
+      grid-auto-flow: column;
+      grid-gap: 1em;
+    }
+
+    .grid-fr_height .grid-item:nth-child(3n) {
+      background-color: red;
+    }
+
+    .grid-fr_height .grid-item:nth-child(3n + 2) {
+      background-color: orange;
+    }
+
+    .grid-fr_select .grid-item {
+      /* 放在第二列，跨越 2 列 */
+      grid-column: 2 / span 2;
+      background-color: red;
+    }
+
+  </style>
+</head>
+
+<body>
+  <h3>固定宽网格</h3>
+  <div class="grid">
+    <div class="grid-item">每列的宽度为100px</div>
+    <div class="grid-item">每列的宽度为100px</div>
+    <div class="grid-item">每列的宽度为100px</div>
+    <div class="grid-item">每列的宽度为100px</div>
+  </div>
+  <h3>响应式网格：方法1：使用fr为单位</h3>
+  <div class="grid-fr">
+    <div class="grid-item">fr 是代表一个片段的灵活长度单位。</div>
+    <div class="grid-item">当你使用 fr 单位时，浏览器会分割开放空间并根据 fr 倍数将区域分配给列。</div>
+    <div class="grid-item">使用fr为单位</div>
+    <div class="grid-item">使用fr为单位</div>
+  </div>
+  <h3>使用 fr 单元创建的网格并不总是相等的！</h3>
+  <div class="grid-fr">
+    <div class="grid-item">
+      <img src="img/2.jpg" />
+    </div>
+    <div class="grid-item">每个 fr 单位是可用（或剩余）空间的一个小片段。</div>
+    <div class="grid-item">如果你的元素比使用 fr 单位创建的任何列都要宽，则需要以不同的方式进行计算。</div>
+    <div class="grid-item"></div>
+  </div>
+  <h3>希望 fr 单位每次都创建等宽列，则需要使用 minmax(0, 1fr) 去强制指定它。</h3>
+  <div class="grid-fr grid-fr_same">
+    <div class="grid-item">
+      <img src="img/2.jpg" />
+    </div>
+    <div class="grid-item">通过minmax()函数来创建网格轨道的最小或最大尺寸</div>
+    <div class="grid-item">minmax()函数接受两个参数：第一个参数定义网格轨道的最小值，第二个参数定义网格轨道的最大值。</div>
+    <div class="grid-item">可以接受任何长度值，也接受auto值。auto值允许网格轨道基于内容的尺寸拉伸或挤压。</div>
+  </div>
+  <h3>不等宽网格</h3>
+  <div class="grid-fr grid-fr_different">
+    <div class="grid-item">只需更改 fr 倍数，就可以创建宽度不等的网格。</div>
+    <div class="grid-item">比如：grid-template-columns: 1fr 1.618fr 2.618fr;</div>
+    <div class="grid-item">表示：第二列是第一列的 1.618 倍，第三列是第二列的 1.618 倍。</div>
+  </div>
+  <h3>repeat()</h3>
+  <div class="grid-fr">
+    <div class="grid-item">repeat()可以创建重复的网格轨道。</div>
+    <div class="grid-item">适用于创建相等尺寸的网格项目和多个网格项目。</div>
+    <div class="grid-item">repeat()接受两个参数：第一个参数定义网格轨道应该重复的次数，第二个参数定义每个轨道的尺寸。</div>
+    <div class="grid-item">比如这个例子就可以写成 grid-template-columns: repeat(4,1fr)</div>
+  </div>
+  <h3>响应式网格：方法2：媒体查询</h3>
+  <div class="grid-fr grid-fr_media">
+    <div class="grid-item">使用 @media (min-width: ***) {} 进行断点</div>
+    <div class="grid-item">当你使用 fr 单位时，浏览器会分割开放空间并根据 fr 倍数将区域分配给列。</div>
+    <div class="grid-item">使用fr为单位</div>
+    <div class="grid-item">使用fr为单位</div>
+  </div>
+  <h3>基于高度的网格</h3>
+  <div class="grid-fr_height">
+    <div class="grid-item"></div>
+    <div class="grid-item"></div>
+    <div class="grid-item"></div>
+    <div class="grid-item"></div>
+    <div class="grid-item"></div>
+    <div class="grid-item"></div>
+    <div class="grid-item"></div>
+    <div class="grid-item"></div>
+    <div class="grid-item"></div>
+    <div class="grid-item"></div>
+    <div class="grid-item"></div>
+    <div class="grid-item"></div>
+    <div class="grid-item"></div>
+    <div class="grid-item"></div>
+    <div class="grid-item"></div>
+    <div class="grid-item"></div>
+  </div>
+  <h3>网格项的放置</h3>
+  <div class="grid-fr grid-fr_select">
+    <div class="grid-item">可以通过 span 关键字告诉网格项应该占用多少列。</div>
+    <div class="grid-item">可以通过 span 关键字告诉网格项应该占用多少列。</div>
+    <div class="grid-item">可以通过 span 关键字告诉网格项应该占用多少列。</div>
+  </div>
+</body>
+
+</html>
